@@ -163,10 +163,10 @@
 		F003FA5A25EF2E830025C723 /* iexWatcherlist */ = {
 			isa = PBXGroup;
 			children = (
+				F003FB1C25EF6F9A0025C723 /* SearchSymbol */,
+				F003FB1B25EF6F910025C723 /* SymbolDetail */,
 				F003FAA325EF318C0025C723 /* Local Storage */,
 				F003FAA125EF31730025C723 /* Network */,
-				F003FAA025EF31670025C723 /* SymbolDetail */,
-				F003FA9F25EF31380025C723 /* SearchSymbol */,
 				F003FA9E25EF30860025C723 /* Watchlist */,
 				F003FA9125EF2EC00025C723 /* SupportingFiles */,
 				F003FA6925EF2E850025C723 /* LaunchScreen.storyboard */,
@@ -209,20 +209,6 @@
 				F003FA5F25EF2E830025C723 /* ViewController.swift */,
 			);
 			path = Watchlist;
-			sourceTree = "<group>";
-		};
-		F003FA9F25EF31380025C723 /* SearchSymbol */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = SearchSymbol;
-			sourceTree = "<group>";
-		};
-		F003FAA025EF31670025C723 /* SymbolDetail */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = SymbolDetail;
 			sourceTree = "<group>";
 		};
 		F003FAA125EF31730025C723 /* Network */ = {
@@ -282,6 +268,20 @@
 				F003FAEA25EF4FC70025C723 /* Hosts.swift */,
 			);
 			path = Service;
+			sourceTree = "<group>";
+		};
+		F003FB1B25EF6F910025C723 /* SymbolDetail */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = SymbolDetail;
+			sourceTree = "<group>";
+		};
+		F003FB1C25EF6F9A0025C723 /* SearchSymbol */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = SearchSymbol;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
