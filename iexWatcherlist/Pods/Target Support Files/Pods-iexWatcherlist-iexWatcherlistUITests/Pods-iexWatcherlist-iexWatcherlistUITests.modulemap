@@ -1,0 +1,6 @@
+framework module Pods_iexWatcherlist_iexWatcherlistUITests {
+  umbrella header "Pods-iexWatcherlist-iexWatcherlistUITests-umbrella.h"
+
+  export *
+  module * { export * }
+}
