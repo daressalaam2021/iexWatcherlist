@@ -36,5 +36,9 @@ $ pod install
     
 4. Built with Xcode 12.2, Support iOS 13.0+ and dark mode
 
+## Demo
+1. Sunday (No Live Prices) [Link](https://drive.google.com/file/d/1YUZaE1m8BKApDM4CcWFVLYqKC09FPGsp/view?usp=sharing)
+2. Trade Day Live prices [Link](https://drive.google.com/file/d/1fQ5uq6mCt6zW654k6O4l3Q8zykjqKUCP/view?usp=sharing) 
+
 ## Unit Testing
 unit tests focus on data model decoding includes `Symbol`, `Quote` and `MarketBatch`. To run the test, find sixth icon on left side bar and click right button on row `iexWatcherlistTests`
