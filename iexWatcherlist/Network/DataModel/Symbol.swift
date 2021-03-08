@@ -28,7 +28,16 @@ struct Symbol: Decodable {
     }
 }
 
-extension Symbol: Equatable {}
+extension Symbol: Equatable, Hashable {
+    
+    static func == (lhs: Symbol, rhs: Symbol) -> Bool {
+        lhs.symbol == rhs.symbol
+    }
+    
+    func hash(into hasher: inout Hasher) {
+        hasher.combine(self.symbol)
+    }
+}
 
 private extension Symbol {
     enum CodingKeys: String, CodingKey {

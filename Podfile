@@ -7,7 +7,6 @@ target 'iexWatcherlist' do
 
   # Pods for iexWatcherlist
   pod 'SnapKit', '~> 5.0.0'
-  pod 'SwiftLint'
   pod 'Charts'
 
   target 'iexWatcherlistTests' do

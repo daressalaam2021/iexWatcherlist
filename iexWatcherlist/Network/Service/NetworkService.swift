@@ -7,25 +7,18 @@
 
 import Foundation
 
-enum ServiceRequestError: Error {
-    case unknown
-    case urlInvalid
-    case client
-    case server
-    case decoding
-}
-
 protocol ServiceProtocol {
-    func perform<T>(service request: ServiceRequest, decoding: T.Type, completion: @escaping (Result<T, ServiceRequestError>) -> Void) where T: Decodable
+    func perform<T>(service request: ServiceRequest, decoding: T.Type, completion: @escaping (Result<T, ServiceRequestError>) -> Void) -> URLSessionDataTask? where T: Decodable
 }
 
 extension ServiceProtocol {
     
-    func perform<T>(service request: ServiceRequest, decoding: T.Type, completion: @escaping (Result<T, ServiceRequestError>) -> Void) where T: Decodable {
+    @discardableResult
+    func perform<T>(service request: ServiceRequest, decoding: T.Type, completion: @escaping (Result<T, ServiceRequestError>) -> Void) -> URLSessionDataTask? where T: Decodable {
         
         guard let urlRequest = request.urlRequest, let _ = urlRequest.url else {
             completion(.failure(.urlInvalid))
-            return
+            return nil
         }
         
         let task = ServiceApi.shared.session.dataTask(with: urlRequest, completionHandler: { data, response, error in
@@ -49,5 +42,6 @@ extension ServiceProtocol {
             }
         })
         task.resume()
+        return task
     }
 }

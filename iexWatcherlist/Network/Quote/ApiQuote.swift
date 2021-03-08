@@ -15,9 +15,10 @@ protocol ApiQuote {
     ///   - completion: Returns a Quote or error
     func getQuote(with symbol: String, _ completion: @escaping (Result<Quote, ServiceRequestError>) -> Void)
     
-    /// get Quotes via an array of symbols
+    /// get MarketBatch via an array of symbols
     /// - Parameters:
-    ///   - symbols: array of stock symbols
-    ///   - completion: Returns an array of Quote or error
-    func getQuotes(with symbols: [String], _ completion: @escaping (Result<[Quote], ServiceRequestError>) -> Void)
+    ///   - symbols: set of stock symbols
+    ///   - type: BatchDataType
+    ///   - completion: Returns an array of MarketBatch or error
+    func getQuotes(with symbols: Set<String>, type: BatchDataType, _ completion: @escaping (Result<[MarketBatch], ServiceRequestError>) -> Void)
 }

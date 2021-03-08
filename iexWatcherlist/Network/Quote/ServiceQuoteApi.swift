@@ -9,10 +9,14 @@ import Foundation
 
 final class ServiceQuoteApi: ApiQuote, ServiceProtocol {
     
+    private weak var previousQuoteTask: URLSessionTask?
+    private weak var previousBatchTask: URLSessionTask?
+    
     func getQuote(with symbol: String, _ completion: @escaping (Result<Quote, ServiceRequestError>) -> Void) {
+        previousQuoteTask?.cancel()
         let service = Self.getQuote(symbol: symbol)
         
-        perform(service: service, decoding: Quote.self) { (result) in
+        self.previousQuoteTask = perform(service: service, decoding: Quote.self) { (result) in
             switch result {
             case .success(let quote):
                 completion(.success(quote))
@@ -23,20 +27,14 @@ final class ServiceQuoteApi: ApiQuote, ServiceProtocol {
         }
     }
     
-    func getQuotes(with symbols: [String], _ completion: @escaping (Result<[Quote], ServiceRequestError>) -> Void) {
-        let service = Self.getQuotes(symbols: symbols)
+    func getQuotes(with symbols: Set<String>, type: BatchDataType, _ completion: @escaping (Result<[MarketBatch], ServiceRequestError>) -> Void) {
+        previousBatchTask?.cancel()
+        let service = Self.getQuotes(symbols: symbols, type: type)
         
-        perform(service: service, decoding: [String: [String: Quote]].self) { (result) in
+        self.previousBatchTask = perform(service: service, decoding: [String: MarketBatch].self) { (result) in
             switch result {
-            case .success(let quotes):
-                // covert dictionary to array
-                var quotesArray = [Quote]()
-                for (_, value) in quotes {
-                    if let quote = value["quote"] {
-                        quotesArray.append(quote)
-                    }
-                }
-                completion(.success(quotesArray))
+            case .success(let batch):
+                completion(.success(Array(batch.values)))
                 
             case .failure(let error):
                 completion(.failure(error))
@@ -51,15 +49,33 @@ private extension ServiceQuoteApi {
         return ServiceRequest(endpoint: Endpoint(path: path, host: .iex))
     }
     
-    static func getQuotes(symbols: [String]) -> ServiceRequest {
+    static func getQuotes(symbols: Set<String>, type: BatchDataType) -> ServiceRequest {
         let path = "/stable/stock/market/batch"
         let queryItems: [URLQueryItem]
         if symbols.isEmpty {
             queryItems = []
         } else {
-            let symbols = symbols.reduce("", { $0 + "," + $1 })
-            queryItems = [URLQueryItem(name: "symbols", value: symbols),
-                          URLQueryItem(name: "types", value: "quote")]
+            let symbols = symbols.reduce("", {
+                if $0.isEmpty {
+                    return $0 + $1
+                } else {
+                    return $0 + "," + $1
+                }
+            })
+            
+            var typeString = ""
+            if type.contains(.quote) {
+                typeString += "quote"
+            }
+            if type.contains(.chart) {
+                typeString += typeString.isEmpty ? "chart" : ",chart"
+            }
+            if typeString.isEmpty {
+                queryItems = [URLQueryItem(name: "symbols", value: symbols)]
+            } else {
+                queryItems = [URLQueryItem(name: "symbols", value: symbols),
+                              URLQueryItem(name: "types", value: typeString)]
+            }
         }
         
         return ServiceRequest(endpoint: Endpoint(path: path, queryItems: queryItems, host: .iex))
